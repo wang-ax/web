@@ -17,12 +17,16 @@ import java.io.PrintWriter;
  */
 @WebServlet("")
 public class HomeServlet  extends HttpServlet {
+    //private static int COUNT;//使用静态的肯定可以
+    private int COUNT;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("utf-8");
-        String name = req.getParameter("name");
-        resp.setContentType("text/html;charset=utf-8");
+        COUNT++;
+        req.setCharacterEncoding("utf-8");//设置请求的字符编码
+        String name = req.getParameter("name");//获取http协议提交过来的数据，返回的结果是字符串类型的
+        resp.setContentType("text/html;charset=utf-8");//设置响应体的类型
         PrintWriter writer = resp.getWriter();
+        //定义一个模板
         String template ="<html>\n" +
                 "    <head>\n" +
                 "        <meta charset = \"utf-8\">\n" +
@@ -31,7 +35,8 @@ public class HomeServlet  extends HttpServlet {
                 "        <link rel =\"stylesheet\" href =\"css/style.css\">\n" +
                 "    </head>\n" +
                 "    <body>\n" +
-                "        <h1>:name:</h1>\n" +
+                "        <div>访问次数：:COUNT:</div>" +
+                "        <h1>:name:的主页</h1>\n" +
                 "        <div class =\"hobby\">\n" +
                 "            <h2>:name:的爱好</h2>\n" +
                 "            <ul>\n" +
@@ -53,7 +58,8 @@ public class HomeServlet  extends HttpServlet {
                 "        <img src=\"image/profile.jpg\" width = \"200\" height=\"200\">\n" +
                 "    </body>\n" +
                 "</html>";
-         String content = template.replace(":name:",name);
+        //只需要把占位符替代就可以了
+         String content = template.replace(":name:",name).replace(":COUNT:",String.valueOf(COUNT));
          writer.println(content);
     }
 }
